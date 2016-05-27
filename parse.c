@@ -23,8 +23,7 @@ enum VALUES {
 };
 
 
-// 構造 狀態結構體
-// 怎麼建立一張表，存儲狀態名和狀態序號的關係
+
 STATE *state_all[100];
 int i = 0;
 
@@ -35,7 +34,6 @@ void state_init()
 void state_create_mem(STATE s)
 {
     state_init();
-//    state_all[i]->name =
 }
 
 static char* strdup_mem(const char* str)
@@ -49,13 +47,6 @@ static char* strdup_mem(const char* str)
     return copy;
 }
 
-
-
-
-
-
-
-// 解析
 
 typedef struct Parser Parser;
 
@@ -147,12 +138,6 @@ init_item(Parser *parser, JSON *parent, JSON **prev, char item_type)
         }
         *prev = json_item;
 
-//        int i = 0; int j = 0;
-//        i= parser->json_p->item_type;
-//        j= json_item->item_type;
-//        printf("%p, %p", json_item, (parser->json_p));
-//        printf("init type: %d %d\n", i, j);
-
         return json_item;
     }
 
@@ -175,15 +160,6 @@ parse_word(Parser *parser, JSON *parent, JSON **prev, char *lit)
 
 
 
-//static int
-//scan_hex4(Parser *parser)
-//{
-//    for (int i = 0; i < 4; i++) {
-//        char c = *parser->src_p++;
-//        must(('0'<=c && c<='9') || ('a'<=c && c<='f') || ('A'<=c && c<='F'));
-//    }
-//    return 1;
-//}
 static const unsigned char firstByteMark[7] = { 0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC };
 static unsigned 
 parse_hex4(const char *str)
@@ -224,20 +200,6 @@ parse_string(Parser *parser, JSON *parent, JSON **prev)
     JSON *json_item = init_item(parser, parent, prev, '"');
     parser->src_p++; /* consume " */
     while (*parser->src_p != '"' && *parser->src_p) {
-        // char c = *parser->src_p;
-        // must(c >= ' '); /* no control chars */
-        // parser->src_p++;
-        // if (c == '\\') {
-        //     switch (c = *parser->src_p++) {
-        //         case 'b': case 'f': case 'n': case 'r':
-        //         case 't': case '"': case '\\': case '/':
-        //             continue;
-        //         case 'u':
-        //             must(scan_hex4(parser));
-        //             continue;
-        //     }
-        //     return 0;
-        // }
 
         must( *parser->src_p >= ' ');
         if (*parser->src_p!='\\') *ptr2++=*parser->src_p++;
@@ -287,19 +249,12 @@ parse_string(Parser *parser, JSON *parent, JSON **prev)
 
 //    parser->json_p->item_string = strdup_mem(string_out);
     json_item->item_string = strdup_mem(string_out);
-//   return string_out;
-//    return json_item;
+
     return 1;
 }
 
 
-// static void
-// scan_digits(Parser *parser)
-// {
-//     while ('0' <= *parser->src_p && *parser->src_p <= '9') {
-//         parser->src_p++;
-//     }
-// }
+
 
 static int
 parse_number(Parser *parser, JSON *parent, JSON **prev)
@@ -322,10 +277,7 @@ parse_number(Parser *parser, JSON *parent, JSON **prev)
             do {
                 number=(number*10.0)+(*parser->src_p++ -'0');   
             } while ('0' <= *parser->src_p && *parser->src_p <= '9');
-            // while ('0' <= *parser->src_p && *parser->src_p <= '9') {
-            //     parser->src_p++;
-            // }    
-        }
+
     }
     if (*parser->src_p == '.') {
         parser->src_p++;
@@ -333,9 +285,6 @@ parse_number(Parser *parser, JSON *parent, JSON **prev)
         // scan_digits(parser);
         double fract = 0;
         {
-            // while ('0' <= *parser->src_p && *parser->src_p <= '9') {
-            //     parser->src_p++;
-            // }
             double scale = 1; 
             do {
                 scale *= 10.0;
@@ -368,12 +317,6 @@ parse_number(Parser *parser, JSON *parent, JSON **prev)
         if (exposigh == 1) number *= expo;
         else if (exposigh == -1) number /= expo;
         
-        // // scan_digits(parser);
-        // {
-        //     while ('0' <= *parser->src_p && *parser->src_p <= '9') {
-        //         parser->src_p++;
-        //     }
-        // }
     }
     if (json_item) {
         json_item->item_end = parser->src_p;
@@ -504,7 +447,7 @@ parse_value(Parser *parser, JSON *parent, JSON **vprev)
     return VALUE;
 }
 
-// 屬性 狀態STATES 事件EVENTS 轉移TRANS 單獨處理
+
 static int
 parse_pair(Parser *parser, JSON *parent, JSON **kprev, JSON **vprev)
 {
@@ -513,7 +456,6 @@ parse_pair(Parser *parser, JSON *parent, JSON **kprev, JSON **vprev)
     KEY = parse_key(parser, parent, kprev);
 
     // add
-    //解析對象之前先解析一個key,
     switch (KEY) {
         case STATES:
             printf("================states is ...\n");
@@ -551,7 +493,7 @@ parse_pair(Parser *parser, JSON *parent, JSON **kprev, JSON **vprev)
             printf("state data is %s\n", (char*)a->state_data);
             break;
         case STATE_PARE:
-//            a->parent_state =     // 付一個狀態指針，而這裏的parser->json_p->item_string爲字符串指針
+//            a->parent_state =     
             printf("state's parent is %s\n", parser->json_p->item_string);
             break;
         case STATE_ENTR:
@@ -676,12 +618,6 @@ json_parse(char *src, int n_item)
 //    if (part) {
         if (parser.n_item < n_item)
             n_item = parser.n_item;
-//        }
-//        for (int i = 0; i < npart; i++) {
-//            part[i].item_len = part[i].item_end - part[i].src;
-//            printf("part[%d].item_type:%c, \npart[%d].src:%s, \npart[%d].item_end:%s, \npart[%d].item_len:%d\n",i, part[i].item_type, i, part[i].src, i, part[i].item_end, i, part[i].item_len);
-//        }
-//    }
 
     printf("npart:%d\n", n_item);
     printf("n_json_max_deep:%d\n", parser.n_json_deep);

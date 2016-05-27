@@ -28,7 +28,7 @@ int json_parse(char *src, int n_item);
 
 
 
-typedef struct event_ EVENT;  //事件引發轉換，用動作來相應, 事件和動作分離 //EVENTS  //事件也會有下一個事件？。。。
+typedef struct event_ EVENT;  
 struct event_
 {
     int event_type;							// EVENT_TYPE
@@ -50,8 +50,8 @@ struct transition_
 };
 struct state_
 {
-	char *name;                             // STATE_NAME   //識別一個狀態名，生成一個狀態的結構體，加入一個狀態，先識別所有的狀態名
-    void *state_data;  //保存狀態的一些屬性：等。 // STATE_DATA
+	char *name;                             // STATE_NAME   
+    void *state_data;   // STATE_DATA
     STATE *parent_state;                    // STATE_PARE
     STATE *entry_state;                      // STATE_ENTR
     TRANSITION *transitions;                // STATE_TRAN

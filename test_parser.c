@@ -34,10 +34,4 @@ void test_parser()
     if (a > n)
         printf("too many values");
     printf("%d\n", a);
-//    for (int i=0; i<n; i++)
-//        printf("%.*s;\n", x[i].item_end, x[i].src);
-
-//    for (int i = 0; i < n; i++) {
-//        printf("%p, ", &x[i]);
-//    }
 }
